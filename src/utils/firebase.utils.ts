@@ -5,6 +5,7 @@ import {
   signInWithRedirect,
   GoogleAuthProvider,
   UserCredential,
+  createUserWithEmailAndPassword,
   User,
 } from "firebase/auth";
 
@@ -22,12 +23,16 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-const provider =  new GoogleAuthProvider();
-provider.setCustomParameters({
+const googleProvider =  new GoogleAuthProvider(); // there are mmultiple provider available like facebook, these are instantiated as classes
+
+googleProvider.setCustomParameters({
     prompt : "select_account"
 })
-export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth,provider)
+export const auth = getAuth(); // unlike provider auth is singleton / single instance track all auth actions
+
+//providers of Google
+export const signInWithGooglePopup = () => signInWithPopup(auth,googleProvider)//this method is common for all kind of providers
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);//this method is common for all kind of providers
 
 export const db = getFirestore();
 
@@ -52,6 +57,10 @@ export const createUserDocumentFromAuth = async (userAuth : User) =>{
     console.log('error creating the user', error);
  }
  }
- 
+
  return userDocRef
+}
+
+export const createAuthUserWithEmailAndPassword = async () =>{
+
 }
