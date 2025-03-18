@@ -9,7 +9,7 @@ import {
   User,
 } from "firebase/auth";
 
-import { getFirestore, doc , getDoc , setDoc } from 'firebase/firestore'
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyDR_Keo89g0gHRDdxPISz8yInibrBmJaYI",
@@ -23,45 +23,47 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-const googleProvider =  new GoogleAuthProvider(); // there are mmultiple provider available like facebook, these are instantiated as classes
+const googleProvider = new GoogleAuthProvider(); // there are mmultiple provider available like facebook, these are instantiated as classes
 
 googleProvider.setCustomParameters({
-    prompt : "select_account"
+  prompt: "select_account"
 })
 export const auth = getAuth(); // unlike provider auth is singleton / single instance track all auth actions
 
 //providers of Google
-export const signInWithGooglePopup = () => signInWithPopup(auth,googleProvider)//this method is common for all kind of providers
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)//this method is common for all kind of providers
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);//this method is common for all kind of providers
 
+//instance of firebase store
 export const db = getFirestore();
 
 
-export const createUserDocumentFromAuth = async (userAuth : User) =>{
- const userDocRef = doc(db , 'users', userAuth.uid);
- console.log(userDocRef)
+export const createUserDocumentFromAuth = async (userAuth: User) => {
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  console.log(userDocRef)
 
- const userSnapShot = await getDoc(userDocRef)
- console.log(userSnapShot)
- console.log(userSnapShot.exists())
+  const userSnapShot = await getDoc(userDocRef)
+  console.log(userSnapShot)
+  console.log(userSnapShot.exists())
 
- if(!userSnapShot.exists()){
-  const {displayName , email } = userAuth;
-  const createdAt = new Date();
+  if (!userSnapShot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
 
-  try {
-    await setDoc(userDocRef,{
-      displayName,email,createdAt
-    });
-  }catch(error){
-    console.log('error creating the user', error);
- }
- }
+    try {
+      await setDoc(userDocRef, {
+        displayName, email, createdAt
+      });
+    } catch (error) {
+      console.log('error creating the user', error);
+    }
+  }
 
- return userDocRef
+  return userDocRef
 }
 
-export const createAuthUserWithEmailAndPassword = async (email : string , password : string)=>{
-  if(!email || !password) return;
-return await createUserWithEmailAndPassword(auth , email , password)
+// email password auth providor of firebase
+export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
+  if (!email || !password) return;
+  return await createUserWithEmailAndPassword(auth, email, password)
 }

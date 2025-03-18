@@ -19,7 +19,7 @@ const SignUpForm = () =>{
     console.log(formFields)
     const handleChange = (event : any) =>{
         const {name , value} = event.target;
-        setFormFields({...formFields, [name]   : value }) // here setting state dynamically with key and values , keeping track of multiple fields / alternative to formik 
+        setFormFields({...formFields, [name]:value }) // here setting state dynamically with key and values , keeping track of multiple fields / alternative to formik 
     }
 
     const handleSubmit= async(event : any) =>{
@@ -41,8 +41,9 @@ const SignUpForm = () =>{
     
 
     return(<>
+    <div>
     <h1>
-        SignUp With Emai l And Password
+        Sign up With your Email And Password
     </h1>
     <form onSubmit={handleSubmit}>
         <label>Display Name</label>
@@ -55,6 +56,7 @@ const SignUpForm = () =>{
         <input required  type="password" name="confirmPassword"  onChange={handleChange} value={confirmPassword}/>
         <button type="submit">Sign Up</button>
     </form>
+    </div>
     </>)
 }
 export default SignUpForm;
