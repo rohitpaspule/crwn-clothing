@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createAuthUserWithEmailAndPassword } from "../../utils/firebase.utils";
 
 interface IDefaultFormFields {
     displayName : string;
@@ -18,13 +19,32 @@ const SignUpForm = () =>{
     console.log(formFields)
     const handleChange = (event : any) =>{
         const {name , value} = event.target;
-        setFormFields({...formFields, [name] : value })
+        setFormFields({...formFields, [name]   : value }) // here setting state dynamically with key and values , keeping track of multiple fields / alternative to formik 
     }
+
+    const handleSubmit= async(event : any) =>{
+        event.preventDefault()
+        if(password !== confirmPassword){
+            alert("Passwords do not match");
+             return;
+        }
+        try {
+            const response  = await createAuthUserWithEmailAndPassword(email,password);
+            console.log(response)
+
+        }catch(error){
+            console.log("USer createtion encountered error", error)
+        }
+
+        
+    }
+    
+
     return(<>
     <h1>
-        SignUp With Email And Password
+        SignUp With Emai l And Password
     </h1>
-    <form>
+    <form onSubmit={handleSubmit}>
         <label>Display Name</label>
         <input required type="text" name="displayName" onChange={handleChange} value={displayName}/>
         <label> Email</label>
