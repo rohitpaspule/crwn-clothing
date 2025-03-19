@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 import './sign-up-form.styles.scss'
 import Button from "../button/button.component";
+import { UserContext } from "../../contexts/user.contxt";
 
 interface IDefaultFormFields {
     displayName: string;
@@ -19,7 +20,8 @@ const defaultformFields: IDefaultFormFields = {
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultformFields)
     const { displayName, email, password, confirmPassword } = formFields;
-    console.log(formFields)
+    
+    const {setCurrentUser} = useContext(UserContext)
     const handleChange = (event: any) => {
         const { name, value } = event.target;
         setFormFields({ ...formFields, [name]: value }) // here setting state dynamically with key and values , keeping track of multiple fields / alternative to formik 
@@ -39,6 +41,7 @@ const SignUpForm = () => {
             const { user } = response
             await createUserDocumentFromAuth(user, { displayName })
             console.log(response)
+            setCurrentUser(user)
             resetFormFields();
 
         } catch (error) {
