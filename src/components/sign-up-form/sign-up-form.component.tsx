@@ -24,6 +24,9 @@ const SignUpForm = () => {
         const { name, value } = event.target;
         setFormFields({ ...formFields, [name]: value }) // here setting state dynamically with key and values , keeping track of multiple fields / alternative to formik 
     }
+    const resetFormFields =() =>{
+        setFormFields(defaultformFields);
+    }
 
     const handleSubmit = async (event: any) => {
         event.preventDefault()
@@ -35,8 +38,8 @@ const SignUpForm = () => {
             const response: any = await createAuthUserWithEmailAndPassword(email, password);
             const { user } = response
             await createUserDocumentFromAuth(user, { displayName })
-
             console.log(response)
+            resetFormFields();
 
         } catch (error) {
             console.log("USer createtion encountered error", error)

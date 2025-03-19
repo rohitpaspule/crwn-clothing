@@ -7,6 +7,7 @@ import {
   UserCredential,
   createUserWithEmailAndPassword,
   User,
+  signInWithEmailAndPassword
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
@@ -66,4 +67,10 @@ export const createUserDocumentFromAuth = async (userAuth: User, additionalInfor
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
   if (!email || !password) return;
   return await createUserWithEmailAndPassword(auth, email, password)
+}
+
+//interface layer helper function for sign in auth user email&password
+export const signInAuthUserWithEmailAndPassword = async (email: string, password: string) => {
+  if (!email || !password) return;
+  return await signInWithEmailAndPassword(auth, email, password)
 }
