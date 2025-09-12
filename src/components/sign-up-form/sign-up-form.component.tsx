@@ -3,7 +3,9 @@ import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "
 import FormInput from "../form-input/form-input.component";
 import './sign-up-form.styles.scss'
 import Button from "../button/button.component";
-import { UserContext } from "../../contexts/user.contxt";
+//import { UserContext } from "../../contexts/user.contxt";
+
+// setUser auth data is centralised in user context , as firebase provides auth change listener
 
 interface IDefaultFormFields {
     displayName: string;
@@ -21,7 +23,7 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultformFields)
     const { displayName, email, password, confirmPassword } = formFields;
     
-    const {setCurrentUser} = useContext(UserContext)
+    //const {setCurrentUser} = useContext(UserContext)
     const handleChange = (event: any) => {
         const { name, value } = event.target;
         setFormFields({ ...formFields, [name]: value }) // here setting state dynamically with key and values , keeping track of multiple fields / alternative to formik 
@@ -39,9 +41,9 @@ const SignUpForm = () => {
         try {
             const response: any = await createAuthUserWithEmailAndPassword(email, password);
             const { user } = response
-            await createUserDocumentFromAuth(user, { displayName })
+            await createUserDocumentFromAuth(user, { displayName }) // here need to leverage display name value from form hence not centralized in user context
             console.log(response)
-            setCurrentUser(user)
+            //setCurrentUser(user)
             resetFormFields();
 
         } catch (error) {

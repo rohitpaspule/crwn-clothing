@@ -5,10 +5,11 @@ import { useContext } from "react"
 import { UserContext } from "../../contexts/user.contxt"
 import { signOutUser } from "../../utils/firebase.utils"
 const Navigation = () => {
-    const { currentUser ,setCurrentUser } = useContext(UserContext)
+    const { currentUser} = useContext(UserContext)
     const signOutHandler = async () =>{
       await signOutUser();
-      setCurrentUser(null)   
+      //setCurrentUser(null)
+      // setUser auth data is centralised in user context , as firebase provides auth change listener   
     }
 
     return <>

@@ -1,4 +1,6 @@
-import { initializeApp } from "firebase/app";
+// fire base is suite of tools , firestore  , app , auth are tools 
+
+import { initializeApp } from "firebase/app"; // it creates app instance based of provided config 
 import {
   getAuth,
   signInWithPopup,
@@ -8,11 +10,15 @@ import {
   createUserWithEmailAndPassword,
   User,
   signInWithEmailAndPassword,
-  signOut
+  signOut,
+  onAuthStateChanged
+
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
 
+//after Registering app in project in firebase these configs generated
+// Webapps firebase congigurations  , it identifies sdk and points to firebase instances created on account 
 const firebaseConfig = {
   apiKey: "AIzaSyDR_Keo89g0gHRDdxPISz8yInibrBmJaYI",
   authDomain: "crwn-clothing-db-fab8a.firebaseapp.com",
@@ -22,7 +28,7 @@ const firebaseConfig = {
   appId: "1:429611251829:web:a1a8c680520d184311603c",
 };
 
-// Initialize Firebase
+// Initialize Firebase , configs passed  it sdk , to identify webappand db on firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider(); // there are mmultiple provider available like facebook, these are instantiated as classes
@@ -76,5 +82,9 @@ export const signInAuthUserWithEmailAndPassword = async (email: string, password
   return await signInWithEmailAndPassword(auth, email, password)
 }
 
-//iterface layer functuion to sign out user
+//iterface layer function to sign out user
 export const signOutUser = async () => signOut(auth);
+
+export const onAuthStateChangeListener = (callback) =>{
+  onAuthStateChanged(auth ,callback)
+}

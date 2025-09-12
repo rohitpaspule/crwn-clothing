@@ -4,7 +4,8 @@ import FormInput from "../form-input/form-input.component";
 import './sign-in-form.styles.scss'
 import Button from "../button/button.component";
 import { getRedirectResult, UserCredential } from "firebase/auth";
-import { UserContext } from "../../contexts/user.contxt";
+//import { UserContext } from "../../contexts/user.contxt";
+// setUser auth data is centralised in user context , as firebase provides auth change listener
 
 interface IDefaultFormFields {
     email: string;
@@ -17,22 +18,24 @@ const defaultformFields: IDefaultFormFields = {
 const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultformFields)
     const { email, password } = formFields;
-    const {setCurrentUser} = useContext(UserContext)
+    //const {setCurrentUser} = useContext(UserContext)
 
     const GooglePopup = async () => {
         const response = await signInWithGooglePopup();
-        const { user } = response
-        const userDocRef = await createUserDocumentFromAuth(user);
-        setCurrentUser(user)
+        //const { user } = response
+        //const userDocRef = await createUserDocumentFromAuth(user);
+        //here google auth was creating user doc , which is isolated in user context like setuser 
+        //setCurrentUser(user)
     }
 
 
     const redirectFLow = async () => {
         const response: UserCredential | null = await getRedirectResult(auth);
         if (response) {
-            const { user } = response
-            const userDocRef = await createUserDocumentFromAuth(user);
-            setCurrentUser(user)
+            //const { user } = response
+            //const userDocRef = await createUserDocumentFromAuth(user);
+            //here google auth was creating user doc , which is isolated in user context like setuser 
+            //setCurrentUser(user)
         }
 
         console.log(response)
@@ -55,9 +58,9 @@ const SignInForm = () => {
         event.preventDefault()
         try {
             const response = await signInAuthUserWithEmailAndPassword(email, password);
-            const {user} = response
-            setCurrentUser(user)
-            console.log(response)
+            //const {user} = response
+            //setCurrentUser(user)
+            //console.log(response)
             resetFormFields()
 
         } catch (error) {
